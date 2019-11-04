@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="虚拟现实技术," />
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="虚拟现实技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于OBB盒的碰撞检测">
+<meta property="og:url" content="https:&#x2F;&#x2F;jiangyj888.github.io&#x2F;2019&#x2F;10&#x2F;31&#x2F;test&#x2F;index.html">
+<meta property="og:site_name" content="Wing&#39;s Blog">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http:&#x2F;&#x2F;b339.photo.store.qq.com&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;jqU2HgOXPw.7YqT1v5nPl4F5UCeJxGbZCaTVR5YF8sY!&#x2F;c&#x2F;dFMBAAAAAAAA&amp;bo=ugKaAboCmgERADc!&amp;rf=mood_app">
+<meta property="og:image" content="http:&#x2F;&#x2F;b182.photo.store.qq.com&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;6ifGkczeW8vVgFfnneav9HX*lObTu7OMYEKx5FZmjOA!&#x2F;b&#x2F;dLYAAAAAAAAA&amp;bo=tQKCAbUCggERADc!&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;a3.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;*bqsxfS.mn*V.VDBmUgZljhOr95rV4IgjCyx*eKAckA!&#x2F;b&#x2F;dLYAAAAAAAAA&amp;ek=1&amp;kp=1&amp;pt=0&amp;bo=tgJ2AbYCdgERADc!&amp;tl=1&amp;vuin=2575679420&amp;tm=1571745600&amp;sce=50-1-1&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;a1.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;Q0..kbTymrFFAvumtVC79m6GK05eY14davKgwoPz8rI!&#x2F;b&#x2F;dAgBAAAAAAAA&amp;ek=1&amp;kp=1&amp;pt=0&amp;bo=sAJ1AbACdQERADc!&amp;tl=1&amp;vuin=2575679420&amp;tm=1571745600&amp;sce=50-1-1&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;a4.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;I1Ze9LdrD7FplEw4s.xbQpUFdIIGY2S8cofIjefnxR0!&#x2F;b&#x2F;dL8AAAAAAAAA&amp;ek=1&amp;kp=1&amp;pt=0&amp;bo=rwJ0Aa8CdAERADc!&amp;tl=1&amp;vuin=2575679420&amp;tm=1571745600&amp;sce=50-1-1&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;a4.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;WnVxLZE5LK2xsF0CkFxPNKOiDm2JqaYWMlsarUycYww!&#x2F;b&#x2F;dL8AAAAAAAAA&amp;ek=1&amp;kp=1&amp;pt=0&amp;bo=uwJ3AbsCdwERADc!&amp;tl=1&amp;vuin=2575679420&amp;tm=1571745600&amp;sce=50-1-1&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;a3.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;oQ.WvsI8zN7LtCsvqnd*E225UFlwUcYMPG9xrX*XAvM!&#x2F;b&#x2F;dL4AAAAAAAAA&amp;ek=1&amp;kp=1&amp;pt=0&amp;bo=qwJzAasCcwERADc!&amp;tl=1&amp;vuin=2575679420&amp;tm=1571745600&amp;sce=50-1-1&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;b197.photo.store.qq.com&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;xHomNkiCSEFz9UUtOir91iHzfEok7GElhvBltoTDLW4!&#x2F;b&#x2F;dMUAAAAAAAAA&amp;bo=LAGQACwBkAARADc!&amp;rf=viewer_311">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;ar1Bb7Qcxzf9mct5pH1qOClX77Jeq6VEr784vlelKaI!&#x2F;b&#x2F;dLYAAAAAAAAA&amp;bo=kAIpAgAAAAADF4s!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;vJq.wn8VP1zX2*tDsEIC35l3VOMFZ7gbwOF15t4rsqc!&#x2F;b&#x2F;dL8AAAAAAAAA&amp;bo=7QCEAAAAAAADF1s!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;LqgSFHrzmfQT5EcvBPgWJRzhxYiW1nZNBajj7Rg77*A!&#x2F;b&#x2F;dLYAAAAAAAAA&amp;bo=.QBOAAAAAAADF4U!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;K9yb.yyKBCcittm*0a9mYBw0liiEhFsgkyPKamOSXcg!&#x2F;b&#x2F;dL8AAAAAAAAA&amp;bo=kAIpAgAAAAADF4s!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;DzQMCTLKgB3jV.dWIOHmD4J.xmp6k6aAUUt79p7BJP0!&#x2F;b&#x2F;dMMAAAAAAAAA&amp;bo=4gCCAAAAAAADF1I!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;KtsXeOgLD3vCG8Xzq1xtgePhdxUw*j6sEGr1OaMZoSk!&#x2F;b&#x2F;dL8AAAAAAAAA&amp;bo=XgE.AAAAAAADF1M!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;YJVtzZB6ydC1zLZioTax4IPbds0ZLgAJDbUR8AXhIJE!&#x2F;b&#x2F;dFMBAAAAAAAA&amp;bo=UQM.AgAAAAADF1w!&amp;rf=viewer_4">
+<meta property="og:image" content="http:&#x2F;&#x2F;m.qpic.cn&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;fs49JHtmvGm6IyN1bAWVjsMoSIqx3tIBZmiRAy9HpKQ!&#x2F;b&#x2F;dE8BAAAAAAAA&amp;bo=TwM*AQAAAAADF0A!&amp;rf=viewer_4">
+<meta property="og:updated_time" content="2019-10-31T13:27:21.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;b339.photo.store.qq.com&#x2F;psb?&#x2F;V12aIMZr022zyK&#x2F;jqU2HgOXPw.7YqT1v5nPl4F5UCeJxGbZCaTVR5YF8sY!&#x2F;c&#x2F;dFMBAAAAAAAA&amp;bo=ugKaAboCmgERADc!&amp;rf=mood_app">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jiangyj888.github.io/2019/10/31/test/"/>
+
+
+
+
+
+  <title>基于OBB盒的碰撞检测 | Wing's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wing's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jiangyj888.github.io/2019/10/31/test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wing">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wing's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于OBB盒的碰撞检测</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-31T20:54:02+08:00">
+                2019-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://b339.photo.store.qq.com/psb?/V12aIMZr022zyK/jqU2HgOXPw.7YqT1v5nPl4F5UCeJxGbZCaTVR5YF8sY!/c/dFMBAAAAAAAA&bo=ugKaAboCmgERADc!&rf=mood_app" alt=""></p>
+<a id="more"></a>
+<br>
+
+<p><img src="http://b182.photo.store.qq.com/psb?/V12aIMZr022zyK/6ifGkczeW8vVgFfnneav9HX*lObTu7OMYEKx5FZmjOA!/b/dLYAAAAAAAAA&amp;bo=tQKCAbUCggERADc!&rf=viewer_311" alt=""></p>
+<br>
+
+<p><img src="http://a3.qpic.cn/psb?/V12aIMZr022zyK/*bqsxfS.mn*V.VDBmUgZljhOr95rV4IgjCyx*eKAckA!/b/dLYAAAAAAAAA&ek=1&kp=1&pt=0&bo=tgJ2AbYCdgERADc!&tl=1&vuin=2575679420&tm=1571745600&sce=50-1-1&rf=viewer_311" alt=""></p>
+<br>
+
+<p><img src="http://a1.qpic.cn/psb?/V12aIMZr022zyK/Q0..kbTymrFFAvumtVC79m6GK05eY14davKgwoPz8rI!/b/dAgBAAAAAAAA&ek=1&kp=1&pt=0&bo=sAJ1AbACdQERADc!&tl=1&vuin=2575679420&tm=1571745600&sce=50-1-1&rf=viewer_311" alt=""></p>
+<br>
+
+<p><img src="http://a4.qpic.cn/psb?/V12aIMZr022zyK/I1Ze9LdrD7FplEw4s.xbQpUFdIIGY2S8cofIjefnxR0!/b/dL8AAAAAAAAA&ek=1&kp=1&pt=0&bo=rwJ0Aa8CdAERADc!&tl=1&vuin=2575679420&tm=1571745600&sce=50-1-1&rf=viewer_311" alt=""></p>
+<br>
+
+
+<p><img src="http://a4.qpic.cn/psb?/V12aIMZr022zyK/WnVxLZE5LK2xsF0CkFxPNKOiDm2JqaYWMlsarUycYww!/b/dL8AAAAAAAAA&ek=1&kp=1&pt=0&bo=uwJ3AbsCdwERADc!&tl=1&vuin=2575679420&tm=1571745600&sce=50-1-1&rf=viewer_311" alt=""></p>
+<br>
+
+<p><img src="http://a3.qpic.cn/psb?/V12aIMZr022zyK/oQ.WvsI8zN7LtCsvqnd*E225UFlwUcYMPG9xrX*XAvM!/b/dL4AAAAAAAAA&ek=1&kp=1&pt=0&bo=qwJzAasCcwERADc!&tl=1&vuin=2575679420&tm=1571745600&sce=50-1-1&rf=viewer_311" alt=""></p>
+<br>
+![](http://a2.qpic.cn/psb?/V12aIMZr022zyK/iZ3XFi1g.optumJYmbKUrAqIxwA20ddedDjOO5.6MiM!/b/dMUAAAAAAAAA&ek=1&kp=1&pt=0&bo=pgJ9AaYCfQERADc!&tl=1&vuin=2575679420&tm=1571745600&sce=50-1-1&rf=viewer_311)
+
+
+<br>
+
+
+
+<p>&ensp;&ensp;&ensp;&ensp;下面，只考虑矩形的情况，如何检测分离轴。<br>很明显，矩形4条边，有4条检测轴，那么2个矩形就有8个。但是矩形有2个轴是重复的，所以只需要检测2条轴就可以了，既是矩形的两条互相垂直的边所在的轴。</p>
+<p><img src="http://b197.photo.store.qq.com/psb?/V12aIMZr022zyK/xHomNkiCSEFz9UUtOir91iHzfEok7GElhvBltoTDLW4!/b/dMUAAAAAAAAA&amp;bo=LAGQACwBkAARADc!&rf=viewer_311" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;如上图，判断碰撞，我们需要判断2个矩形在4个轴上的投影是否重叠。这里有2种可能的方式。第一种，把每个矩形的4个顶点投影到一个轴上，这样算出4个顶点最长的连线距离，以后同样对待第二个矩形，最后判断2个矩形投影距离是否重叠。</p>
+<p>&ensp;&ensp;&ensp;&ensp;首先准备两个点集数据：</p>
+<p>&ensp;&ensp;&ensp;&ensp;生成第一个BOX的点集：[3.7,1.7]，[4.1,3.8],[4.7,2.9], [5.2,2.8],[6.0,4.0],[6.3, 3.6], [9.7,<br>6.3], [10.0, 4.9], [11.0, 3.6], [12.5, 6.4]</p>
+<p>&ensp;&ensp;&ensp;&ensp;生成第二个BOX的点集：[13.3,5],[15,6],[14,2],[16,2],[18,9],[16,12],[23,13],[14,18.8],[13.3,9.5],[13.5,9.6]</p>
+<p>&ensp;&ensp;&ensp;&ensp;利用matplotlib打印出两个点集进行观察：</p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/ar1Bb7Qcxzf9mct5pH1qOClX77Jeq6VEr784vlelKaI!/b/dLYAAAAAAAAA&bo=kAIpAgAAAAADF4s!&rf=viewer_4" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;分别计算出两个OBBBOX的半长、半宽以及中心点：</p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/vJq.wn8VP1zX2*tDsEIC35l3VOMFZ7gbwOF15t4rsqc!/b/dL8AAAAAAAAA&bo=7QCEAAAAAAADF1s!&rf=viewer_4" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;最后使用OBB检测算法，分别检查四个分离轴上的投影是否具有包围盒A与包围盒B在轴L上的投影的半径和是否小于包围盒中心点间距在L的投影，若有一边满足该条件，则可认为没有发生碰撞。</p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/LqgSFHrzmfQT5EcvBPgWJRzhxYiW1nZNBajj7Rg77*A!/b/dLYAAAAAAAAA&bo=.QBOAAAAAAADF4U!&rf=viewer_4" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;由于四个分离轴都发生相交，所以这两个点集产生的OBB包围盒发生了碰撞!</p>
+<p>&ensp;&ensp;&ensp;&ensp;将第二个BOX的点集数据换成：[12,33],[15,23.3],[11,17],[12,13],[18,15],[10,23],[13,14],[12,18.8],[21,26],[15,28]进行验证<br><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/K9yb.yyKBCcittm*0a9mYBw0liiEhFsgkyPKamOSXcg!/b/dL8AAAAAAAAA&bo=kAIpAgAAAAADF4s!&rf=viewer_4" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;此时BOXB的半长、半宽、以及中心点为：</p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/DzQMCTLKgB3jV.dWIOHmD4J.xmp6k6aAUUt79p7BJP0!/b/dMMAAAAAAAAA&bo=4gCCAAAAAAADF1I!&rf=viewer_4" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;观察程序输出结果：</p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/KtsXeOgLD3vCG8Xzq1xtgePhdxUw*j6sEGr1OaMZoSk!/b/dL8AAAAAAAAA&bo=XgE.AAAAAAADF1M!&rf=viewer_4" alt=""></p>
+<p>&ensp;&ensp;&ensp;&ensp;只有三条分离轴上检测盒产生重叠，可见该两个点集产生的OBB包围盒没有发生碰撞。</p>
+<p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;代码如下图所示：</p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/YJVtzZB6ydC1zLZioTax4IPbds0ZLgAJDbUR8AXhIJE!/b/dFMBAAAAAAAA&bo=UQM.AgAAAAADF1w!&rf=viewer_4" alt=""></p>
+<p><img src="http://m.qpic.cn/psb?/V12aIMZr022zyK/fs49JHtmvGm6IyN1bAWVjsMoSIqx3tIBZmiRAy9HpKQ!/b/dE8BAAAAAAAA&bo=TwM*AQAAAAADF0A!&rf=viewer_4" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%99%9A%E6%8B%9F%E7%8E%B0%E5%AE%9E%E6%8A%80%E6%9C%AF/" rel="tag"># 虚拟现实技术</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/20/%E5%8A%A8%E7%89%A9%E4%B9%8C%E6%89%98%E9%82%A6/" rel="next" title="动物乌托邦">
+                <i class="fa fa-chevron-left"></i> 动物乌托邦
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/04/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98/" rel="prev" title="哲学家就餐问题">
+                哲学家就餐问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Wing</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wing</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="操作系统," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;ensp;&amp;ensp;生产者和消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一个存储空间，生产者往存储空间中添加产品，消费者从存储空间中取走产品，当存储空间为空时，消费者阻塞，当存储空间满时，生产者阻塞。">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="生产者消费者问题">
+<meta property="og:url" content="https:&#x2F;&#x2F;jiangyj888.github.io&#x2F;2019&#x2F;11&#x2F;04&#x2F;%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98&#x2F;index.html">
+<meta property="og:site_name" content="Wing&#39;s Blog">
+<meta property="og:description" content="&amp;ensp;&amp;ensp;生产者和消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一个存储空间，生产者往存储空间中添加产品，消费者从存储空间中取走产品，当存储空间为空时，消费者阻塞，当存储空间满时，生产者阻塞。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-04T15:22:44.218Z">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jiangyj888.github.io/2019/11/04/生产者消费者问题/"/>
+
+
+
+
+
+  <title>生产者消费者问题 | Wing's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wing's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jiangyj888.github.io/2019/11/04/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wing">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wing's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">生产者消费者问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-04T23:02:59+08:00">
+                2019-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&ensp;&ensp;生产者和消费者问题是线程模型中的经典问题：生产者和消费者在同一时间段内共用同一个存储空间，生产者往存储空间中添加产品，消费者从存储空间中取走产品，当存储空间为空时，消费者阻塞，当存储空间满时，生产者阻塞。<br> <a id="more"></a><br>&ensp;&ensp;在线程世界里，生产者就是生产数据的线程，消费者就是消费数据的线程。在多线程开发当中，如果生产者处理速度很快，而消费者处理速度很慢，那么生产者就必须等待消费者处理完，才能继续生产数据。同样的道理，如果消费者的处理能力大于生产者，那么消费者就必须等待生产者。为了解决这个问题于是引入了生产者和消费者模式。</p>
+<pre><code>本问题采用共享内存的方式实现：
+
+   shmid=shmget((key_t)1121,sizeof(struct buffer),0666|IPC_CREAT); //获取共享内存标识符
+
+    shm=shmat(shmid,0,0);  //把共享内存区映射到进程的地址空间
+
+
+打开的缓冲区结构体为：
+
+struct buffer   //缓冲区结构体
+
+{
+
+   sem_t empty;
+
+   sem_t full;
+
+   sem_t mutex;
+
+   buffer_item buf[BUFFER_SIZE];
+
+};</code></pre><p>  &ensp;&ensp; 利用三个posix信号量对进程、线程进行同步：</p>
+<pre><code>生产者行为：
+
+void *producer(void *arg) //生产者function
+
+{
+
+   struct buffer* buf=(struct buffer*)arg;
+
+   while(1){
+
+     int i=rand()/10000000; //产生随机数
+
+     if(sem_wait(&amp;(buf-&gt;empty))) perror(&quot;P error!&quot;);
+
+     if(sem_wait(&amp;(buf-&gt;mutex))) perror(&quot;P error!&quot;);
+
+     int k;
+
+     for(k=0;k&lt;BUFFER_SIZE&amp;&amp;buf-&gt;buf[k]!=0;k++); //统计不为0的元素的个数
+
+     if(k==BUFFER_SIZE){
+
+       sem_post(&amp;(buf-&gt;mutex));
+
+       sem_post(&amp;(buf-&gt;full));
+
+       sleep(5);
+
+     }
+
+     else{
+
+        insert_item(buf,i); //生产元素
+
+        if(sem_post(&amp;(buf-&gt;mutex))) perror(&quot;V error!&quot;);
+
+        if(sem_post(&amp;(buf-&gt;full))) perror(&quot;V error!&quot;);
+
+        printf(&quot;pid: %d tid: %d prod: %d\n&quot;,getpid(),gettid(),i); //打印出进程id 线程id 生产的数据
+
+        double z;  //利用负指数分布来产生生产数据的间隔
+
+        do{
+
+           z=((double)rand()/RAND_MAX);
+
+          }
+
+        while((z==0)||(z==1));
+
+        double waitfor=-Gamma*log(z);
+
+        sleep(waitfor); //间隔
+
+     }
+
+  }
+
+   }</code></pre><p>&ensp;&ensp;消费者行为：</p>
+<pre><code>void *consumer(void *arg) //消费者函数
+
+{
+
+   struct buffer* buf=(struct buffer*)arg;
+
+   while(1){
+
+     if(sem_wait(&amp;(buf-&gt;full))) perror(&quot;P error!&quot;);
+
+     if(sem_wait(&amp;(buf-&gt;mutex))) perror(&quot;P error!&quot;);
+
+     int k;
+
+     for(k=0;k&lt;BUFFER_SIZE&amp;&amp;buf-&gt;buf[k]==0;k++); //缓冲区中为0元素数量统计
+
+     if(k==BUFFER_SIZE){
+
+       sem_post(&amp;(buf-&gt;mutex));
+
+       sem_post(&amp;(buf-&gt;empty));
+
+       sleep(5);
+
+     }
+
+     else{
+
+        int i=remove_item(buf); //移出元素
+
+        if(sem_post(&amp;(buf-&gt;mutex))) perror(&quot;V error!&quot;);
+
+        if(sem_post(&amp;(buf-&gt;empty))) perror(&quot;V error!&quot;);
+
+        printf(&quot;pid: %d tid: %d cons: %d\n&quot;,getpid (),gettid(),i); //打印出进程id 线程id 消费的数据
+
+        double z;  //利用负指数分布来产生消费数据的间隔
+
+        do{
+
+           z=((double)rand()/RAND_MAX);
+
+        }
+
+        while((z==0)||(z==1));
+
+        double waitfor=-Gamma*log(z); 
+
+        sleep(waitfor); //间隔
+
+     }
+
+
+
+  }
+
+}</code></pre><p>&ensp;&ensp;最后附上完整代码：</p>
+<p>消费者：</p>
+<pre><code>#include &lt;stdlib.h&gt;
+
+#include &lt;stdio.h&gt;
+
+#include &lt;pthread.h&gt;
+
+#include &lt;semaphore.h&gt;
+
+#include &lt;malloc.h&gt;
+
+#include &lt;sys/types.h&gt;
+
+#include &lt;sys/ipc.h&gt;
+
+#include &lt;sys/shm.h&gt;
+
+#include &lt;fcntl.h&gt;
+
+#include &lt;sys/syscall.h&gt;
+
+#include &lt;unistd.h&gt;
+
+#include &lt;math.h&gt;
+
+typedef int buffer_item;
+
+#define BUFFER_SIZE 20 //缓冲区大小
+
+double Gamma; //负指数分布的参数
+
+pid_t gettid()  //获取线程的id
+
+{
+
+   return syscall(SYS_gettid);
+
+}
+
+
+
+struct buffer   //缓冲区结构体
+
+{
+
+   sem_t empty;
+
+  sem_t full;
+
+   sem_t mutex;
+
+   buffer_item buf[BUFFER_SIZE];
+
+
+
+};
+
+
+
+int remove_item(struct buffer *buf_) //将数据移出缓冲区
+
+{
+
+   struct buffer* buff=buf_;
+
+    int i,x;
+
+   for(i=0;i&lt;BUFFER_SIZE;i++){
+
+  if(buff-&gt;buf[i]!=0) //数据不为0的元素移出
+
+      {
+
+         x=buff-&gt;buf[i];
+
+         buff-&gt;buf[i]=0;
+
+         break;
+
+      }
+
+   }
+
+return x; //返回移出的元素
+
+}
+
+
+
+void *consumer(void *arg) //消费者函数
+
+{
+
+   struct buffer* buf=(struct buffer*)arg;
+
+   while(1){
+
+      if(sem_wait(&amp;(buf-&gt;full))) perror(&quot;P error!&quot;);
+
+      if(sem_wait(&amp;(buf-&gt;mutex))) perror(&quot;P error!&quot;);
+
+      int k;
+
+      for(k=0;k&lt;BUFFER_SIZE&amp;&amp;buf-&gt;buf[k]==0;k++); //缓冲区中为0元素数量统计
+
+      if(k==BUFFER_SIZE){
+
+        sem_post(&amp;(buf-&gt;mutex));
+
+        sem_post(&amp;(buf-&gt;empty));
+
+        sleep(5);
+
+      }
+
+      else{
+
+         int i=remove_item(buf); //移出元素
+
+         if(sem_post(&amp;(buf-&gt;mutex))) perror(&quot;V error!&quot;);
+
+         if(sem_post(&amp;(buf-&gt;empty))) perror(&quot;V error!&quot;);
+
+         printf(&quot;pid: %d tid: %d cons: %d\n&quot;,getpid(),gettid(),i); //打印出进程id 线程id 消费的数据
+
+         double z;  //利用负指数分布来产生消费数据的间隔
+
+         do{
+
+            z=((double)rand()/RAND_MAX);
+
+         }
+
+         while((z==0)||(z==1));
+
+         double waitfor=-Gamma*log(z); 
+
+         sleep(waitfor); //间隔
+
+      }
+
+
+
+   }
+
+}
+
+
+
+int main(char *argc,char *argv[]){
+
+   int arg1=atoi(argv[1]); //获取输入的负指数参数
+
+   Gamma=(double)arg1; //将参数转换为double型
+
+   void *shm=NULL;
+
+   struct buffer *buf__=NULL;
+
+   int shmid;
+
+   shmid=shmget((key_t)1121,sizeof(struct buffer),0666|IPC_CREAT); //获取共享内存标识符
+
+   shm=shmat(shmid,0,0);  //把共享内存区映射到进程的地址空间
+
+   buf__=(struct buffer*)shm;
+
+   pthread_t *pthreads_cons;
+
+   pthreads_cons=malloc(sizeof(pthread_t)*3);
+
+   int i;
+
+   //创建3个消费者线程
+
+   for(i=0;i&lt;3;i++){
+
+      pthread_create(&amp;pthreads_cons[i],NULL,consumer,(void *)buf__);
+
+   } 
+
+   for(i=0;i&lt;3;i++){
+
+      pthread_join(pthreads_cons[i],NULL);
+
+   }
+
+    //将共享内存从当前进程中分离
+
+   if(shmdt(shm) == -1)  //如果失败则exit
+
+   {
+
+      exit(EXIT_FAILURE);
+
+       }
+
+
+
+   if(shmctl(shmid, IPC_RMID, 0) == -1)  //如果失败则exit
+
+   {
+
+       exit(EXIT_FAILURE);
+
+   }  
+
+   exit(EXIT_SUCCESS);
+
+
+
+}</code></pre><p>生产者：</p>
+<pre><code>#include &lt;stdlib.h&gt;
+
+#include &lt;stdio.h&gt;
+
+#include &lt;pthread.h&gt;
+
+#include &lt;semaphore.h&gt;
+
+#include &lt;malloc.h&gt;
+
+#include &lt;sys/types.h&gt;
+
+#include &lt;sys/ipc.h&gt;
+
+#include &lt;sys/shm.h&gt;
+
+#include &lt;fcntl.h&gt;
+
+#include &lt;unistd.h&gt;
+
+#include &lt;sys/syscall.h&gt;
+
+#include &lt;math.h&gt;
+
+typedef int buffer_item;
+
+#define BUFFER_SIZE 20 //缓冲区大小
+
+double Gamma; //负指数分布的参数
+
+pid_t gettid()  //获取线程的id
+
+{
+
+   return syscall(SYS_gettid);</code></pre><p> }</p>
+<pre><code>struct buffer  //缓冲区结构体
+
+{
+
+   sem_t empty;
+
+   sem_t full;
+
+   sem_t mutex;
+
+   buffer_item buf[BUFFER_SIZE];
+
+
+
+};
+
+
+
+int insert_item(struct buffer *buf_,buffer_item x) //向缓冲区中插入元素
+
+{
+
+   struct buffer* buff=buf_;
+
+   int i=0;
+
+   for(i=0;i&lt;BUFFER_SIZE;i++){
+
+      if(buff-&gt;buf[i]==0) //更改值为0的元素
+
+      {
+
+         buff-&gt;buf[i]=x;
+
+         break;
+
+      }
+
+   }
+
+
+
+
+
+
+
+
+
+}
+
+
+
+struct buffer* buffer_init(struct buffer* buf__) //初始化缓冲区
+
+{
+
+   struct buffer* buf=buf__;
+
+   int i;
+
+   for(i=0;i&lt;BUFFER_SIZE;i++) //初始化缓冲区
+
+      buf__-&gt;buf[i]=0;
+
+   //初始化信号量
+
+   if(sem_init(&amp;(buf-&gt;empty),1,BUFFER_SIZE)) printf(&quot;failed to init empty\n&quot;);
+
+   if(sem_init(&amp;(buf-&gt;full),1,0)) printf(&quot;failed to init full\n&quot;);
+
+   if(sem_init(&amp;(buf-&gt;mutex),1,1)) printf(&quot;failed to init mutex\n&quot;);
+
+   return buf;
+
+}
+
+void *producer(void *arg) //生产者function
+
+{
+
+   struct buffer* buf=(struct buffer*)arg;
+
+   while(1){
+
+      int i=rand()/10000000; //产生随机数
+
+      if(sem_wait(&amp;(buf-&gt;empty))) perror(&quot;P error!&quot;);
+
+      if(sem_wait(&amp;(buf-&gt;mutex))) perror(&quot;P error!&quot;);
+
+      int k;
+
+      for(k=0;k&lt;BUFFER_SIZE&amp;&amp;buf-&gt;buf[k]!=0;k++); //统计不为0的元素的个数
+
+      if(k==BUFFER_SIZE){
+
+        sem_post(&amp;(buf-&gt;mutex));
+
+        sem_post(&amp;(buf-&gt;full));
+
+        sleep(5);
+
+      }
+
+      else{
+
+         insert_item(buf,i); //生产元素
+
+         if(sem_post(&amp;(buf-&gt;mutex))) perror(&quot;V error!&quot;);
+
+         if(sem_post(&amp;(buf-&gt;full))) perror(&quot;V error!&quot;);
+
+         printf(&quot;pid: %d tid: %d prod: %d\n&quot;,getpid(),gettid(),i); //打印出进程id 线程id 生产的数据
+
+         double z;  //利用负指数分布来产生生产数据的间隔
+
+         do{
+
+            z=((double)rand()/RAND_MAX);
+
+           }
+
+         while((z==0)||(z==1));
+
+         double waitfor=-Gamma*log(z);
+
+         sleep(waitfor); //间隔
+
+      }
+
+   }
+
+}
+
+
+
+
+
+int main(char *argc,char *argv[]){
+
+   int arg1=atoi(argv[1]); //获取输入的负指数参数
+
+   Gamma=(double)arg1; //将参数转换为double型
+
+   void *shm=NULL;
+
+   struct buffer *buf__=NULL;
+
+   int shmid;
+
+   shmid=shmget((key_t)1121,sizeof(struct buffer),0666|IPC_CREAT); //获取共享内存标识符
+
+   shm=shmat(shmid,(void*)0,0); //把共享内存区映射到进程的地址空间
+
+
+
+   buf__=(struct buffer*)shm;
+
+   buf__=buffer_init(buf__);
+
+   pthread_t *pthreads_prod;
+
+   pthreads_prod=malloc(sizeof(pthread_t)*3);
+
+   int i;
+
+   //创建3个生产者线程
+
+   for(i=0;i&lt;3;i++){
+
+      pthread_create(&amp;pthreads_prod[i],NULL,producer,(void *)buf__);
+
+   }
+
+   for(i=0;i&lt;3;i++){
+
+      pthread_join(pthreads_prod[i],NULL);
+
+   }
+
+     //将共享内存从当前进程中分离
+
+    if(shmdt(shm) == -1)        //如果失败则exit
+
+    {
+
+        exit(EXIT_FAILURE);
+
+    }
+
+
+
+    if(shmctl(shmid, IPC_RMID, 0) == -1)        //如果失败则exit
+
+    {
+
+        exit(EXIT_FAILURE);
+
+    }  
+
+    exit(EXIT_SUCCESS);
+
+}</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/04/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98/" rel="next" title="哲学家就餐问题">
+                <i class="fa fa-chevron-left"></i> 哲学家就餐问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Wing</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wing</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
