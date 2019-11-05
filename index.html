@@ -248,6 +248,154 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jiangyj888.github.io/2019/11/05/%E2%80%9C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wing">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wing's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/05/%E2%80%9C%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80/" itemprop="url">数据库学习笔记(一)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-05T15:33:39+08:00">
+                2019-11-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#数据操作：</p>
+<h2 id="数据更新："><a href="#数据更新：" class="headerlink" title="数据更新："></a>数据更新：</h2><p>&ensp;<br>&ensp;SQL语言的INSERT语句通常有两种形式，一种是插入一个元组，一种是插入子查询结果。</p>
+<p>&ensp;&ensp;插入元组的INSERT语句的格式为：</p>
+<pre><code>INSEERT
+INTO &lt;表名&gt; [(&lt;属性列1&gt;，[属性列2]...)]
+VALUES(&lt;常量1&gt;，&lt;常量2&gt;...)</code></pre><p>&ensp;&ensp;插入子查询结果</p>
+<pre><code>INSERT
+INTO &lt;表名&gt; [(&lt;属性列1&gt;，[属性列2]...)]
+子查询；</code></pre><p>&ensp;&ensp;修改操作一般又称为更新操作，其语句的表达式一般为<br>UPDATE &lt;表名&gt;<br>    SET &lt;列名&gt;=&lt;表达式&gt; [, &lt;列名&gt;=&lt;表达式&gt;]…<br>    [WHERE&lt;条件&gt;]；</p>
+<p>&ensp;&ensp;删除语句的一般格式为：</p>
+<pre><code>DELETE
+FROM
+[WHERE&lt;条件&gt;]；</code></pre><p>&ensp;&ensp;判断一个属性的值是否为NULL，用 IS NULL和IS NOT NULL来表示。</p>
+<h2 id="视图："><a href="#视图：" class="headerlink" title="视图："></a>视图：</h2><p>&ensp;&ensp;SQL用CREATE VIEW命令建立视图，其一般格式为：</p>
+<pre><code>CREATE VIEW &lt;视图名&gt; [(&lt;列名&gt;,[&lt;列名&gt;]...)]
+AS &lt;子查询&gt;
+[WITH CHECK OPTION];</code></pre><p>&ensp;&ensp;删除视图：</p>
+<pre><code>DROP VIEW &lt;视图名&gt; [CASCADE]</code></pre><p>&ensp;&ensp;查询视图：</p>
+<pre><code>SELECT
+FORM
+WHERE</code></pre><p>&ensp;&ensp;<strong>更新视图：</strong></p>
+<p>更新视图是指通过视图来插入（INSERT）、删除（DELETE）、和修改（UPDATE）数据。</p>
+<p>由于视图是不实际存储数据的虚表，因此对视图的更新最终要转换为对基本表的更新。</p>
+<p>&ensp;&ensp;<strong>视图的作用：</strong></p>
+<p><strong>1.</strong>视图能够简化用户的操作。</p>
+<p><strong>2.</strong>视图使用户能以多角度看待同一数据。</p>
+<p><strong>3.</strong>视图对重构数据库提供了一定程度的逻辑独立性。</p>
+<p><strong>4.</strong>视图能够对机密数据提供安全保护</p>
+<p><strong>5.</strong>适当利用视图可以更清晰的表达查询</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://jiangyj888.github.io/2019/11/04/%E8%BF%9B%E7%A8%8B%E4%BC%98%E5%85%88%E7%BA%A7%E3%80%81nice%E5%80%BC%E5%92%8C%E6%9D%83%E9%87%8D%E3%80%81vruntime%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -901,7 +1049,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -914,7 +1062,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
